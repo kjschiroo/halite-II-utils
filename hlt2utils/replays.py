@@ -45,24 +45,9 @@ class Replay(object):
 
     @property
     def winner(self):
-        end_frame = self.frames[-1]
-        ship_counts = end_frame.player_ship_count
-        remaining_players = [
-            player for player, count in ship_counts.items() if count > 0
-        ]
-        if len(remaining_players) == 1:
-            return remaining_players[0]
-        planet_counts = end_frame.player_planet_count
-        if len(planet_counts) == 1:
-            return list(planet_counts.keys())[0]
-        ships_produced = self.ships_produced
-        leaders = [
-            owner for owner, score in ships_produced.items()
-            if score == max(ships_produced.values())
-        ]
-        if len(leaders) == 1:
-            return leaders[0]
-        return None
+        for person, rank in self.replay_dict['stats'].items():
+            if rank['rank'] == 1:
+                return person
 
     def ships_produced(self, up_to=None):
         totals = Counter()
